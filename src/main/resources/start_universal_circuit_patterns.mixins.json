@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.startechnology.compat.universalcircuitpatterns.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "start_universal_circuit_patterns.refmap.json",
+  "client": [
+    "EncodingHelperMixin",
+    "ExtendedPatternAccessTermScreenAccessor",
+    "ExtendedPatternProviderInfoAccessor",
+    "PatternAccessTermScreenAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
