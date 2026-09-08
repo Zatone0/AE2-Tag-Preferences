@@ -1,0 +1,11 @@
+# AE2 Tag Preferences: copy this file to your Minecraft instance's config folder.
+# Replace or extend these examples with tags/items that exist in your pack.
+# Use resource IDs without a leading #. The first applicable entry wins.
+# An item must belong to the tag AND be a candidate in the recipe being transferred.
+presets = [
+    "forge:ingots/copper=minecraft:copper_ingot",
+    "forge:ingots/iron=minecraft:iron_ingot"
+]
+
+# Optional audit against the tag preferences above.
+enableAudit = false

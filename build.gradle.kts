@@ -9,13 +9,14 @@ val modVersion = providers.gradleProperty("mod_version").get()
 val modGroup = providers.gradleProperty("mod_group").get()
 
 base {
-    archivesName = "start-universal-circuit-patterns-1.20.1"
+    archivesName = "ae2-tag-preferences-1.20.1"
     version = modVersion
     group = modGroup
 }
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(17)
+    withSourcesJar()
 }
 
 legacyForge {
@@ -75,4 +76,18 @@ tasks.jar {
         "Implementation-Title" to modName,
         "Implementation-Version" to modVersion
     )
+}
+
+tasks.withType<AbstractArchiveTask>().configureEach {
+    isPreserveFileTimestamps = false
+    isReproducibleFileOrder = true
+}
+tasks.jar {
+    from("LICENSE", "NOTICE.md")
+    from("licenses/GPL-3.0.txt") { into("licenses") }
+}
+
+tasks.named<Jar>("sourcesJar") {
+    from("LICENSE", "NOTICE.md")
+    from("licenses/GPL-3.0.txt") { into("licenses") }
 }

@@ -5,4 +5,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = "StarT Universal Circuit Patterns"
+rootProject.name = "AE2 Tag Preferences"

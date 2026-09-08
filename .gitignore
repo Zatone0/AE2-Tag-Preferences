@@ -9,3 +9,5 @@ run/
 .project
 .settings/
 
+
+release/dist/

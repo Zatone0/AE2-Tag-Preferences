@@ -24,9 +24,7 @@ public final class PreferredIngredientPresets {
             }
 
             Item preferredItem = BuiltInRegistries.ITEM.get(preset.itemId());
-            if (preferredItem == null
-                    || preferredItem == net.minecraft.world.item.Items.AIR
-                    || !new ItemStack(preferredItem).is(preset.tag())) {
+            if (!preset.isValid()) {
                 continue;
             }
 
@@ -41,7 +39,7 @@ public final class PreferredIngredientPresets {
     }
 
     @Nullable
-    private static Preset parse(String entry) {
+    static Preset parse(String entry) {
         int separator = entry.indexOf('=');
         if (separator <= 0 || separator != entry.lastIndexOf('=') || separator == entry.length() - 1) {
             return null;
@@ -56,6 +54,11 @@ public final class PreferredIngredientPresets {
         return new Preset(TagKey.create(BuiltInRegistries.ITEM.key(), tagId), itemId);
     }
 
-    private record Preset(TagKey<Item> tag, ResourceLocation itemId) {}
+    static record Preset(TagKey<Item> tag, ResourceLocation itemId) {
+        boolean isValid() {
+            Item item = BuiltInRegistries.ITEM.get(itemId);
+            return item != net.minecraft.world.item.Items.AIR && new ItemStack(item).is(tag);
+        }
+    }
 }
 

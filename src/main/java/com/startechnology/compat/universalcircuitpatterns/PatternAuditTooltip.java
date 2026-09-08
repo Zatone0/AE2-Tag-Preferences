@@ -14,6 +14,9 @@ public final class PatternAuditTooltip {
 
     @SubscribeEvent
     public static void addPatternAudit(ItemTooltipEvent event) {
+        if (!PresetConfig.ENABLE_AUDIT.get()) {
+            return;
+        }
         Level level = event.getEntity() == null ? null : event.getEntity().level();
         if (level == null) {
             return;
@@ -21,18 +24,19 @@ public final class PatternAuditTooltip {
 
         try {
             var result = PatternAudit.inspect(event.getItemStack(), level);
-            if (result == null || !result.hasCircuits()) {
+            if (result == null || !result.hasPreferences()) {
                 return;
             }
 
             if (result.passes()) {
-                event.getToolTip().add(Component.literal("Circuit audit: Universal Circuit OK")
+                event.getToolTip().add(Component.literal("Pattern audit: matches configured preferences")
                         .withStyle(ChatFormatting.GREEN));
             } else {
-                event.getToolTip().add(Component.literal("Circuit audit: RE-ENCODE - conventional circuit input")
+                event.getToolTip().add(Component.literal("Pattern audit: REVIEW - differs from preferences")
                         .withStyle(ChatFormatting.RED));
-                result.conventionalCircuits().forEach(key -> event.getToolTip().add(
-                        Component.literal("  ").append(key.getDisplayName()).withStyle(ChatFormatting.DARK_RED)));
+                event.getToolTip().add(Component.literal("Verify recipe alternatives before re-encoding.").withStyle(ChatFormatting.GRAY));
+                result.mismatches().forEach(mismatch -> event.getToolTip().add(
+                        Component.literal("  ").append(mismatch.description()).withStyle(ChatFormatting.DARK_RED)));
             }
         } catch (RuntimeException ignored) {
             // A malformed or foreign encoded pattern should retain its normal AE2 tooltip.

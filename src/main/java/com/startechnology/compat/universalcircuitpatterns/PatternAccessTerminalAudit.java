@@ -31,6 +31,9 @@ public final class PatternAccessTerminalAudit {
 
     @SubscribeEvent
     public static void onKeyPressed(ScreenEvent.KeyPressed.Pre event) {
+        if (!PresetConfig.ENABLE_AUDIT.get()) {
+            return;
+        }
         var screen = event.getScreen();
         boolean supportedScreen = screen instanceof PatternAccessTermScreen<?>
                 || screen instanceof ExtendedPatternAccessTermScreenAccessor;
@@ -61,7 +64,7 @@ public final class PatternAccessTerminalAudit {
         }
 
         int processingPatterns = 0;
-        int circuitPatterns = 0;
+        int matchingPatterns = 0;
         int passingPatterns = 0;
         List<Component> failures = new ArrayList<>();
 
@@ -85,10 +88,10 @@ public final class PatternAccessTerminalAudit {
                         continue;
                     }
                     processingPatterns++;
-                    if (!result.hasCircuits()) {
+                    if (!result.hasPreferences()) {
                         continue;
                     }
-                    circuitPatterns++;
+                    matchingPatterns++;
                     if (result.passes()) {
                         passingPatterns++;
                     } else {
@@ -107,6 +110,8 @@ public final class PatternAccessTerminalAudit {
                                                     ClickEvent.Action.SUGGEST_COMMAND, "/tp " + coordinates))));
                         }
                         failures.add(line);
+                        result.mismatches().forEach(mismatch -> failures.add(
+                                Component.literal("   ").append(mismatch.description()).withStyle(ChatFormatting.GOLD)));
                     }
                 } catch (RuntimeException ignored) {
                     // Keep auditing if a malformed or foreign pattern cannot be decoded.
@@ -114,13 +119,15 @@ public final class PatternAccessTerminalAudit {
             }
         }
 
-        int failedPatterns = circuitPatterns - passingPatterns;
-        minecraft.player.sendSystemMessage(Component.literal("Universal Circuit pattern audit")
+        int failedPatterns = matchingPatterns - passingPatterns;
+        minecraft.player.sendSystemMessage(Component.literal("Tag preference pattern audit")
                 .withStyle(ChatFormatting.AQUA));
         minecraft.player.sendSystemMessage(Component.literal(
-                "Checked " + processingPatterns + " processing patterns; " + circuitPatterns
-                        + " use tiered circuits. " + passingPatterns + " pass, " + failedPatterns + " need re-encoding.")
+                "Checked " + processingPatterns + " processing patterns; " + matchingPatterns
+                        + " match configured tags. " + passingPatterns + " match preferences, " + failedPatterns + " need review.")
                 .withStyle(failedPatterns == 0 ? ChatFormatting.GREEN : ChatFormatting.GOLD));
+        if (failedPatterns > 0) minecraft.player.sendSystemMessage(Component.literal(
+                "Differences are advisory; verify recipe alternatives before re-encoding.").withStyle(ChatFormatting.GRAY));
         failures.forEach(minecraft.player::sendSystemMessage);
     }
 }

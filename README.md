@@ -1,23 +1,63 @@
-# Star Technology Universal Circuit Patterns
+# AE2 Tag Preferences
 
-Client-side Forge compatibility patch for Minecraft 1.20.1.
+Choose which item AE2 uses for interchangeable tagged ingredients when transferring a processing recipe into the Pattern Encoding Terminal. Set your preferred copper ingot, circuit, or other tagged item in a simple config file.
 
-When EMI or JEI transfers a processing recipe into an AE2 Pattern Encoding Terminal, AE2 normally chooses among equivalent inputs using network craftability and stock. This patch adds an ordered, client-configurable list of tag-to-item presets. Star Technology's Universal Circuits are included as the defaults.
+AE2 normally picks ingredients based on network stock and craftability. This client-side Forge mod checks your ordered preferences first. It only picks an item if it exists, belongs to the configured tag, and is an actual candidate for that recipe slot. Otherwise, AE2 makes its normal choice.
 
-The config is generated at `config/start_universal_circuit_patterns-client.toml`. Each entry has this form:
+## Quick start
+
+1. Install the mod on your **client**, alongside **Minecraft 1.20.1**, **Forge**, and **Applied Energistics 2 15.4.10 or compatible 15.x**. Use your recipe viewer's AE2 processing-pattern transfer integration.
+2. Launch and close Minecraft to generate `config/ae2-tag-preferences-client.toml`, or copy [the example config](examples/ae2-tag-preferences-client.toml) into that location before launching.
+3. Add your preferences and restart Minecraft:
 
 ```toml
-"gtceu:circuits/lv=kubejs:lv_universal_circuit"
+presets = [
+    "forge:ingots/copper=minecraft:copper_ingot",
+    "forge:ingots/iron=minecraft:iron_ingot"
+]
+enableAudit = false
 ```
 
-Entries are checked from top to bottom. A preset is used only when the preferred item exists, belongs to the configured tag, and is one of the recipe slot's candidates. Otherwise AE2 retains its normal selection behavior. This makes the selection system useful for other interchangeable tagged ingredients without allowing it to insert an invalid ingredient.
+4. Transfer a processing recipe into AE2's Pattern Encoding Terminal. For each ingredient slot, the first valid matching preference wins.
 
-The patch affects pattern-terminal population only. It does not alter recipes, tags, encoded-pattern execution, autocrafting, pattern providers, GT machines, or numbered Programmed Circuits.
+The generated config starts with `presets = []`, so it changes no ingredient choices until you configure it. Each entry is `namespace:tag=namespace:item`, without a leading `#`. Use IDs from your own pack. Missing items, malformed entries, incorrect tag membership, and items unavailable in the recipe are ignored. This supports item preferences, not fluid preferences. The original candidate's amount and stack data are retained.
 
-Encoded processing-pattern tooltips also audit tiered circuit inputs. A green line confirms that every tiered circuit input is a Universal Circuit. A red `RE-ENCODE` warning names conventional circuit inputs that should be replaced.
+## For modpack authors
 
-For a network-wide audit, set an AE2 Pattern Access Terminal or ExtendedAE Extended Pattern Access Terminal's provider filter to **Show All** and press `Ctrl+Shift+A`. The client scans every pattern sent by the terminal, reports totals in chat, and lists the output and provider group for each pattern that needs re-encoding. It refuses to report an incomplete result when the terminal is filtering providers.
+Ship the configured file at `config/ae2-tag-preferences-client.toml` in the client pack. This is a Forge CLIENT config, not a world/server config. Players can use their own preferences; the server does not need this mod. No GTCEu, KubeJS, or Star Technology dependency is required for general preferences.
 
-ExtendedAE also sends provider locations, so failures audited from its terminal include clickable `x y z [dimension]` coordinates that suggest the matching `/tp` command. Standard AE2 does not send coordinates to its client screen, so its audit can only identify the provider group.
+When upgrading from Universal Circuit Patterns or Universal Tag Patterns, remove the older JAR first; do not install both. Restart the client after editing the config.
 
-Patterns whose output is itself a tiered circuit are intentionally excluded. Circuit-production chains such as Runic Processors consume predecessor circuits as components, while Universal Circuit recipes consume the circuit being converted; neither input should be audited as a generic machine circuit choice.
+## Optional Pattern Audit
+
+Set `enableAudit = true` to compare encoded processing-pattern ingredients with your configured tag preferences. Tooltips show mismatches as **actual item -> preferred item**, including the matching tag.
+
+For a bulk audit, open a Pattern Access Terminal, set its provider filter to **Show All**, and press **Ctrl+Shift+A**. Results identify the pattern output, provider group, and ingredient differences. ExtendedAE optionally adds provider coordinates and dimension.
+
+The audit uses the first valid configured tag matching each stored item. Missing items and invalid tag memberships are ignored. If the primary output belongs to that same tag, the preference is skipped to protect production chains; other matching preferences are still checked.
+
+Audit differences are suggestions to review, not proof that a replacement works. Encoded processing patterns do not retain the original recipe's ingredient alternatives. Check the recipe before re-encoding. Transfer-time selection still verifies actual recipe candidates. The audit never modifies patterns.
+
+Auditing is disabled by default.
+
+### Star Technology example
+
+Copy [star-technology.toml](examples/star-technology.toml) to `config/ae2-tag-preferences-client.toml` for ULV through UXV Universal Circuit preferences with auditing enabled. Merge entries manually if you already have custom preferences. These are example data; the audit itself contains no circuit-specific rules.
+
+## Scope and compatibility
+
+Ingredient preferences affect processing-pattern terminal population; the optional audit inspects existing processing patterns without modifying them. Existing patterns are not rewritten. Recipes, tags, autocrafting execution, providers, machines, and numbered Programmed Circuits are unaffected.
+
+Built against Forge **47.4.20** and AE2 **15.4.10**, targeting **Java 17**. Minecraft compatibility is restricted to **1.20.1**. EMI/JEI transfer and optional ExtendedAE support still need the live checks listed in [release/CURSEFORGE.md](release/CURSEFORGE.md) before a stable release.
+
+## Building
+
+Run `./gradlew clean build --no-configuration-cache` (`gradlew.bat` on Windows). JDK 21 is used for the local Gradle build; compiled classes target Java 17. Upload `build/libs/ae2-tag-preferences-1.20.1-1.4.0.jar`.
+
+## Release documentation
+
+- [CurseForge description](release/DESCRIPTION.md)
+- [Upload settings and acceptance checklist](release/CURSEFORGE.md)
+- [Changelog](CHANGELOG.md)
+
+License: [LGPL-3.0-only](LICENSE) for code. See [third-party notices](NOTICE.md) and [separate artwork terms](artwork/README.md).
