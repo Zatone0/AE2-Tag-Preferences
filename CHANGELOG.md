@@ -1,3 +1,8 @@
+# 1.4.1
+
+- Exclude the entire pattern from auditing when its primary output matches any valid configured preference tag, including cross-tier production chains.
+- Transfer preferences are unchanged. In-game retest pending.
+
 # AE2 Tag Preferences 1.4.0
 
 - General-purpose, ordered tag-to-item preferences for AE2 processing-recipe transfer.

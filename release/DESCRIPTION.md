@@ -41,7 +41,7 @@ Set `enableAudit = true` to check encoded processing patterns against your confi
 - **Terminal audit:** open a Pattern Access Terminal, set the provider filter to **Show All**, and press **Ctrl+Shift+A**. Results identify pattern outputs, provider groups, and ingredient differences.
 - **ExtendedAE support:** its Extended Pattern Access Terminal can also supply provider coordinates and dimensions.
 
-The audit uses the first valid configured tag matching each stored ingredient. A matching rule is skipped when the pattern's primary output belongs to that same tag, helping avoid warnings on production chains. Other ingredients can still be checked.
+The audit uses the first valid configured tag matching each stored ingredient. Patterns whose primary output belongs to any valid configured preference tag are excluded from auditing. This protects production chains, including cross-tier upgrades. Other inputs on those patterns are also excluded.
 
 Audit warnings are suggestions to review. Encoded processing patterns do not retain the original recipe's ingredient alternatives, so check the recipe before replacing an ingredient. The audit never changes your patterns.
 

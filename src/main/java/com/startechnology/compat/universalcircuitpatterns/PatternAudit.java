@@ -21,6 +21,13 @@ public final class PatternAudit {
         var presets = PresetConfig.PRESETS.get().stream()
                 .map(PreferredIngredientPresets::parse)
                 .filter(preset -> preset != null && preset.isValid()).toList();
+        // A configured ingredient produced by this pattern belongs to a production
+        // chain. Its components can legitimately be other configured ingredients
+        // (for example, a lower-tier circuit), not interchangeable substitutes.
+        if (output.what() instanceof AEItemKey result
+                && presets.stream().anyMatch(preset -> result.isTagged(preset.tag()))) {
+            return new Result(0, List.of(), output.what().getDisplayName());
+        }
         int matched = 0;
         List<Mismatch> mismatches = new ArrayList<>();
         for (var input : pattern.getInputs()) {
@@ -28,9 +35,6 @@ public final class PatternAudit {
                 if (!(alternative.what() instanceof AEItemKey actual)) continue;
                 for (var preset : presets) {
                     if (!actual.isTagged(preset.tag())) continue;
-                    // Preserve production chains for this preference, without hiding
-                    // other unrelated ingredient preferences on the same pattern.
-                    if (output.what() instanceof AEItemKey result && result.isTagged(preset.tag())) break;
                     matched++;
                     var preferred = BuiltInRegistries.ITEM.get(preset.itemId());
                     if (actual.getItem() != preferred) {

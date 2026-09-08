@@ -34,7 +34,7 @@ Set `enableAudit = true` to compare encoded processing-pattern ingredients with 
 
 For a bulk audit, open a Pattern Access Terminal, set its provider filter to **Show All**, and press **Ctrl+Shift+A**. Results identify the pattern output, provider group, and ingredient differences. ExtendedAE optionally adds provider coordinates and dimension.
 
-The audit uses the first valid configured tag matching each stored item. Missing items and invalid tag memberships are ignored. If the primary output belongs to that same tag, the preference is skipped to protect production chains; other matching preferences are still checked.
+The audit uses the first valid configured tag matching each stored item. Missing items and invalid tag memberships are ignored. If the primary output belongs to any valid configured preference tag, the entire pattern is excluded from auditing. This protects production chains, including recipes that upgrade one tier of an ingredient into another. Other inputs on excluded patterns are not audited.
 
 Audit differences are suggestions to review, not proof that a replacement works. Encoded processing patterns do not retain the original recipe's ingredient alternatives. Check the recipe before re-encoding. Transfer-time selection still verifies actual recipe candidates. The audit never modifies patterns.
 
