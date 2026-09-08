@@ -54,10 +54,4 @@ Built against Forge **47.4.20** and AE2 **15.4.10**, targeting **Java 17**. Mine
 
 Run `./gradlew clean build --no-configuration-cache` (`gradlew.bat` on Windows). JDK 21 is used for the local Gradle build; compiled classes target Java 17. Upload `build/libs/ae2-tag-preferences-1.20.1-1.4.0.jar`.
 
-## Release documentation
-
-- [CurseForge description](release/DESCRIPTION.md)
-- [Upload settings and acceptance checklist](release/CURSEFORGE.md)
-- [Changelog](CHANGELOG.md)
-
 License: [LGPL-3.0-only](LICENSE) for code. See [third-party notices](NOTICE.md) and [separate artwork terms](artwork/README.md).
