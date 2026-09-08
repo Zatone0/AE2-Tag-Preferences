@@ -42,11 +42,11 @@ Auditing is disabled by default.
 
 ### Star Technology example
 
-Copy [star-technology.toml](examples/star-technology.toml) to `config/ae2-tag-preferences-client.toml` for ULV through UXV Universal Circuit preferences with auditing enabled. Merge entries manually if you already have custom preferences. These are example data; the audit itself contains no circuit-specific rules.
+Copy [star-technology.toml](examples/star-technology.toml) to `config/ae2-tag-preferences-client.toml` for ULV through UXV Universal Circuit preferences with auditing enabled. Merge entries manually if you already have custom preferences. These are example data; the audit itself contains no specific rules.
 
 ## Scope and compatibility
 
-Ingredient preferences affect processing-pattern terminal population; the optional audit inspects existing processing patterns without modifying them. Existing patterns are not rewritten. Recipes, tags, autocrafting execution, providers, machines, and numbered Programmed Circuits are unaffected.
+Ingredient preferences affect processing-pattern terminal population; the optional audit inspects existing processing patterns without modifying them. Existing patterns are not rewritten. Recipes, tags, autocrafting execution, providers, and machines are unaffected.
 
 Built against Forge **47.4.20** and AE2 **15.4.10**, targeting **Java 17**. Minecraft compatibility is restricted to **1.20.1**. EMI/JEI transfer and optional ExtendedAE support still need the live checks listed in [release/CURSEFORGE.md](release/CURSEFORGE.md) before a stable release.
 
