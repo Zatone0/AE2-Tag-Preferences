@@ -39,6 +39,23 @@ public final class PreferredIngredientPresets {
     }
 
     @Nullable
+    public static ItemStack findPreferredCrafting(
+            net.minecraft.world.item.crafting.Ingredient ingredient,
+            java.util.function.Predicate<ItemStack> filter) {
+        for (String entry : PresetConfig.PRESETS.get()) {
+            Preset preset = parse(entry);
+            if (preset == null || !preset.isValid()) continue;
+            Item preferred = BuiltInRegistries.ITEM.get(preset.itemId());
+            for (ItemStack candidate : ingredient.getItems()) {
+                if (candidate.getItem() == preferred && ingredient.test(candidate) && filter.test(candidate)) {
+                    return candidate.copy();
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nullable
     static Preset parse(String entry) {
         int separator = entry.indexOf('=');
         if (separator <= 0 || separator != entry.lastIndexOf('=') || separator == entry.length() - 1) {

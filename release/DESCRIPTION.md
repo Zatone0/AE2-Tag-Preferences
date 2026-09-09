@@ -64,3 +64,5 @@ Preferences apply to items when transferring processing recipes. Existing patter
 The mod's code is licensed under **GNU LGPL v3**. You may include it in modpacks and redistribute or modify it under that license's terms. Retain the license and notices, and provide the corresponding source as required.
 
 Project artwork is licensed separately under **CC BY-NC-SA 3.0**, with a JEI component under **MIT**. Artwork credits, modifications, license texts, and publication limitations are documented in the repository's artwork directory. This project is not affiliated with or endorsed by AE2 or JEI.
+
+Crafting-pattern recipe transfers also honor configured item preferences, including when another accepted ingredient is already stocked. The selected item must satisfy the actual recipe ingredient and recipe-viewer filter. Auditing remains limited to processing patterns.

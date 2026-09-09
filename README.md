@@ -55,3 +55,5 @@ Built against Forge **47.4.20** and AE2 **15.4.10**, targeting **Java 17**. Mine
 Run `./gradlew clean build --no-configuration-cache` (`gradlew.bat` on Windows). JDK 21 is used for the local Gradle build; compiled classes target Java 17. Upload `build/libs/ae2-tag-preferences-1.20.1-1.4.0.jar`.
 
 License: [LGPL-3.0-only](LICENSE) for code. See [third-party notices](NOTICE.md) and [separate artwork terms](artwork/README.md).
+
+Crafting-pattern recipe transfers also honor configured item preferences, including when another accepted ingredient is already stocked. The selected item must satisfy the actual recipe ingredient and recipe-viewer filter. Auditing remains limited to processing patterns.

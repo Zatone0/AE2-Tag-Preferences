@@ -1,3 +1,10 @@
+# 1.4.2
+
+- Apply configured preferences to crafting-pattern recipe transfers, including the stocked-ingredient path used by Super Chest IV.
+- Preserve recipe ingredient validation, recipe-viewer filters, candidate stack data, and the chosen slot count.
+- Processing transfer behavior and the processing-only audit remain unchanged.
+- In-game retest pending.
+
 # 1.4.1
 
 - Exclude the entire pattern from auditing when its primary output matches any valid configured preference tag, including cross-tier production chains.
