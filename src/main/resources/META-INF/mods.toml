@@ -6,7 +6,7 @@ license="LGPL-3.0-only"
 modId="${mod_id}"
 version="${mod_version}"
 displayName="${mod_name}"
-authors="Star Technology"
+authors="Zatone0"
 displayURL="https://github.com/Zatone0/StarTUniversalTagPatterns"
 description='''
 Choose preferred items for tags when transferring AE2 processing recipes. Configure ordered preferences for your modpack.
