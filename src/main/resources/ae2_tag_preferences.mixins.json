@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "com.startechnology.compat.universalcircuitpatterns.mixin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "start_universal_circuit_patterns.refmap.json",
+  "refmap": "ae2_tag_preferences.refmap.json",
   "client": [
     "EncodingHelperMixin",
     "ExtendedPatternAccessTermScreenAccessor",
